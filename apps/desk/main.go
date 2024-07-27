@@ -15,6 +15,7 @@ import (
 	"github.com/aforamitdev/backoffice/apps/desk/handlers"
 	"github.com/aforamitdev/backoffice/zero/logger"
 	"github.com/ardanlabs/conf/v3"
+	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 )
 
@@ -37,6 +38,10 @@ func main() {
 }
 
 func run(log *zap.SugaredLogger) error {
+	err := godotenv.Load(".env.production")
+	if err != nil {
+		log.Error("error loading env file", err)
+	}
 
 	log.Infow("startup", "GOMAXPROCESS", runtime.GOMAXPROCS(0))
 
@@ -50,12 +55,16 @@ func run(log *zap.SugaredLogger) error {
 			APIHost         string        `conf:"default:0.0.0.0:9080"`
 			DebugHost       string        `conf:"default:0.0.0.0:9081"`
 		}
+		Telegram struct {
+			TelegramSecrate string `conf:"env:TELEGRAM_SECREAT"`
+		}
 	}{
 		Version: conf.Version{
 			Build: build,
 			Desc:  "amitrai",
 		},
 	}
+	cfg.Telegram.TelegramSecrate = os.Getenv("TELEGRAM_SECREAT")
 	const prefix = "DESK"
 	help, err := conf.Parse(prefix, &cfg)
 

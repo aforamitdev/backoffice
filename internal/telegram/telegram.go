@@ -20,3 +20,7 @@ func NewTelegramClient() *Telegram {
 func (t *Telegram) RegisterWebHook() {
 
 }
+
+func (t *Telegram) GetRegisterHooks() {
+
+}
