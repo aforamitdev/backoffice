@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/aforamitdev/backoffice/business/core/hooks"
+	"github.com/aforamitdev/backoffice/business/core/gram"
 )
 
 type Telegram struct {
@@ -27,7 +27,7 @@ func (t *Telegram) RegisterWebHook() {
 
 }
 
-func (t *Telegram) GetRegisterHooks() (hooks.TelegramHookResponse, error) {
+func (t *Telegram) GetRegisterHooks() (gram.TelegramHookResponse, error) {
 
 	c := http.Client{Timeout: time.Duration(2) * time.Second}
 
@@ -35,7 +35,8 @@ func (t *Telegram) GetRegisterHooks() (hooks.TelegramHookResponse, error) {
 
 	if err != nil {
 		fmt.Println(err)
-		return hooks.TelegramHookResponse{}, err
+
+		return gram.TelegramHookResponse{}, err
 	}
 
 	defer resp.Body.Close()
@@ -43,12 +44,10 @@ func (t *Telegram) GetRegisterHooks() (hooks.TelegramHookResponse, error) {
 	respBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("Error reading hooks byted", err)
-		return hooks.TelegramHookResponse{}, err
+		return gram.TelegramHookResponse{}, err
 	}
 
-	fmt.Print(string(respBytes))
-
-	info := hooks.TelegramHookResponse{}
+	info := gram.TelegramHookResponse{}
 
 	err = json.Unmarshal(respBytes, &info)
 	if err != nil {
@@ -56,4 +55,8 @@ func (t *Telegram) GetRegisterHooks() (hooks.TelegramHookResponse, error) {
 	}
 
 	return info, nil
+}
+
+func (t *Telegram) SendGroupMessage(groupId string, text string) {
+
 }

@@ -1,4 +1,4 @@
-package hooks
+package gram
 
 type TelegramHookResponse struct {
 	Ok     bool         `json:"ok"`

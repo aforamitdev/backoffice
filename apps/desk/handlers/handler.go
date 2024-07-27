@@ -31,6 +31,7 @@ func APIMux(cfg APIMuxConfig) http.Handler {
 
 	app.Handle(http.MethodGet, "/status", status.Readness)
 	app.Handle(http.MethodGet, "/receptions", reception.GetActiveHooks)
+	app.Handle(http.MethodPost, "/receptions/lobby/message", reception.ReciveHookMessage)
 
 	return app
 }

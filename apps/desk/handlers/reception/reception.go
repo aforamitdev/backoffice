@@ -2,10 +2,13 @@ package reception
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 
+	"github.com/aforamitdev/backoffice/business/core/gram"
 	"github.com/aforamitdev/backoffice/internal/telegram"
 	"github.com/aforamitdev/backoffice/zero/web"
 )
@@ -33,14 +36,36 @@ func (h *Handler) GetActiveHooks(ctx context.Context, w http.ResponseWriter, r *
 	hooks, err := h.telClient.GetRegisterHooks()
 
 	if err != nil {
-		fmt.Println("error gerring hooks")
+		statusCode := http.StatusInternalServerError
+		errRes := struct {
+			Status string `json:"status"`
+		}{Status: "as"}
+		return web.Respond(ctx, w, errRes, statusCode)
 	}
-	// data := struct {
-	// 	Status string `json:"status"`
-	// }{
-	// 	Status: status,
-	// }
 
 	return web.Respond(ctx, w, hooks, statusCode)
+
+}
+
+func (h *Handler) ReciveHookMessage(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	ctx, cancle := context.WithTimeout(ctx, time.Second)
+	defer cancle()
+
+	respBytes, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println("error")
+	}
+
+	message := gram.BotMessage{}
+
+	err = json.Unmarshal(respBytes, &message)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(message)
+
+	return nil
 
 }
