@@ -2,7 +2,6 @@ package web
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"syscall"
@@ -38,7 +37,6 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) Handle(method string, path string, handler Handler) {
-	fmt.Printf("registring url %s", path)
 	h := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
