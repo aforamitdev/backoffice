@@ -6,7 +6,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/jmoiron/sqlx"
+	pgx "github.com/jackc/pgx/v5"
+
 	_ "github.com/lib/pq" // <------------ here
 )
 
@@ -15,13 +16,13 @@ type Config struct {
 	User         string `conf:"default:postgres"`
 	Password     string `conf:"default:postgres,mask"`
 	Host         string `conf:"default:database-service.sales-system.svc.cluster.local"`
-	Name         string `conf:"default:postgres"`
+	Name         string `conf:"default:main"`
 	MaxIdleConns int    `conf:"default:2"`
 	MaxOpenConns int    `conf:"default:0"`
 	DisableTLS   bool   `conf:"default:true"`
 }
 
-func Open(cfg Config) (*sqlx.DB, error) {
+func Open(cfg Config) (*pgx.Conn, error) {
 	sslMode := "require"
 	if cfg.DisableTLS {
 		sslMode = "disable"
@@ -38,19 +39,16 @@ func Open(cfg Config) (*sqlx.DB, error) {
 		Path:     cfg.Name,
 		RawQuery: q.Encode(),
 	}
-
-	db, err := sqlx.Open("pgx", u.String())
+	db, err := pgx.Connect(context.Background(), u.String())
 	if err != nil {
 		fmt.Println("erro", err)
 		return nil, err
 	}
-	db.SetMaxIdleConns(cfg.MaxIdleConns)
-	db.SetMaxOpenConns(cfg.MaxOpenConns)
 
 	return db, nil
 }
 
-func StatusCheck(ctx context.Context, db *sqlx.DB) error {
+func StatusCheck(ctx context.Context, db *pgx.Conn) error {
 	if _, ok := ctx.Deadline(); !ok {
 		var cancel context.CancelFunc
 		ctx, cancel = context.WithTimeout(ctx, time.Second)
@@ -60,6 +58,6 @@ func StatusCheck(ctx context.Context, db *sqlx.DB) error {
 	const q = `SELECT true`
 	var tmp bool
 
-	return db.QueryRowContext(ctx, q).Scan(&tmp)
+	return db.QueryRow(ctx, q).Scan(&tmp)
 
 }

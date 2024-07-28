@@ -66,10 +66,11 @@ func run(log *zap.SugaredLogger) error {
 			Desc:  "amitrai",
 		},
 		Config: database.Config{
-			User:     os.Getenv("DATABASE_USER"),
-			Password: os.Getenv("DATABASE_PASSWORD"),
-			Host:     os.Getenv("DATABASE_HOST"),
-			Name:     os.Getenv("DATABSE_DB"),
+			User:       os.Getenv("DATABASE_USER"),
+			Password:   os.Getenv("DATABASE_PASSWORD"),
+			Host:       os.Getenv("DATABASE_HOST"),
+			Name:       os.Getenv("DATABSE_DB"),
+			DisableTLS: true,
 		},
 	}
 	cfg.Telegram.TelegramSecrate = os.Getenv("TELEGRAM_SECREAT")
@@ -108,10 +109,14 @@ func run(log *zap.SugaredLogger) error {
 
 	db, err := database.Open(cfg.Config)
 	if err != nil {
-		log.Infow("dbconnect")
+		log.Fatalf("database fail", err, "fail to coneect database")
 
 	}
-	fmt.Println(db)
+	ctx := context.Background()
+	err = database.StatusCheck(ctx, db)
+	if err != nil {
+		panic(err)
+	}
 
 	api := http.Server{
 		Addr:         cfg.Web.APIHost,
