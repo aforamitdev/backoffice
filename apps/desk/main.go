@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/aforamitdev/backoffice/apps/desk/handlers"
+	"github.com/aforamitdev/backoffice/business/sys/database"
 	"github.com/aforamitdev/backoffice/zero/logger"
 	"github.com/ardanlabs/conf/v3"
 	"github.com/joho/godotenv"
@@ -55,6 +56,7 @@ func run(log *zap.SugaredLogger) error {
 			APIHost         string        `conf:"default:0.0.0.0:9080"`
 			DebugHost       string        `conf:"default:0.0.0.0:9081"`
 		}
+		database.Config
 		Telegram struct {
 			TelegramSecrate string `conf:"env:TELEGRAM_SECREAT"`
 		}
@@ -62,6 +64,12 @@ func run(log *zap.SugaredLogger) error {
 		Version: conf.Version{
 			Build: build,
 			Desc:  "amitrai",
+		},
+		Config: database.Config{
+			User:     os.Getenv("DATABASE_USER"),
+			Password: os.Getenv("DATABASE_PASSWORD"),
+			Host:     os.Getenv("DATABASE_HOST"),
+			Name:     os.Getenv("DATABSE_DB"),
 		},
 	}
 	cfg.Telegram.TelegramSecrate = os.Getenv("TELEGRAM_SECREAT")
@@ -98,6 +106,13 @@ func run(log *zap.SugaredLogger) error {
 		Log:      log,
 	})
 
+	db, err := database.Open(cfg.Config)
+	if err != nil {
+		log.Infow("dbconnect")
+
+	}
+	fmt.Println(db)
+
 	api := http.Server{
 		Addr:         cfg.Web.APIHost,
 		Handler:      apiMux,
@@ -109,6 +124,7 @@ func run(log *zap.SugaredLogger) error {
 
 	go func() {
 		log.Infow("startup", "status", "api router started", "host", api.Addr)
+
 		serverErrors <- api.ListenAndServe()
 	}()
 

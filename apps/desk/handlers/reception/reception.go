@@ -40,6 +40,7 @@ func (h *Handler) GetActiveHooks(ctx context.Context, w http.ResponseWriter, r *
 		errRes := struct {
 			Status string `json:"status"`
 		}{Status: "as"}
+
 		return web.Respond(ctx, w, errRes, statusCode)
 	}
 
