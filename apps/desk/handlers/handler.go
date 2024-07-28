@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 
@@ -26,8 +25,6 @@ func APIMux(cfg APIMuxConfig) http.Handler {
 	// initiate terlgram client
 	telClient := telegram.NewTelegramClient()
 	reception := reception.New(cfg.Build, telClient)
-
-	fmt.Println(status)
 
 	app.Handle(http.MethodGet, "/status", status.Readness)
 	app.Handle(http.MethodGet, "/receptions", reception.GetActiveHooks)

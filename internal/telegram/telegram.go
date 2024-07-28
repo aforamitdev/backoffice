@@ -43,7 +43,6 @@ func (t *Telegram) GetRegisterHooks() (gram.TelegramHookResponse, error) {
 
 	respBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading hooks byted", err)
 		return gram.TelegramHookResponse{}, err
 	}
 
