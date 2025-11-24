@@ -5,8 +5,14 @@ import FilterItem from '../units/FilterItem';
 import { Clock, Plus } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@radix-ui/react-avatar';
 import { Button } from '@/components/ui/button';
+import { useAtomValue } from 'jotai';
+import { currentTaskAtom } from '@/state/time.jotai';
 
-const ControlPanel = (props: Props) => {
+const ControlPanel = () => {
+  const task = useAtomValue(currentTaskAtom);
+  if (!task) {
+    return <></>;
+  }
   return (
     <>
       <Card className='p-0 overflow-hidden shadow-sm border-slate-200'>
@@ -15,7 +21,7 @@ const ControlPanel = (props: Props) => {
           <div className='flex justify-between items-start'>
             <div className='space-y-1'>
               <h1 className='text-2xl font-bold tracking-tight text-slate-900'>
-                Acme Inc - Champion Has Departed
+                {task?.task?.name}
               </h1>
               <p className='text-sm text-slate-500'>
                 Manage project roadmap and deliverables.
@@ -59,6 +65,7 @@ const ControlPanel = (props: Props) => {
               value='Stella Artois'
               avatar='https://api.dicebear.com/7.x/avataaars/svg?seed=Stella'
             />
+
             <FilterItem
               label='Priority'
               value='Low'
@@ -68,23 +75,11 @@ const ControlPanel = (props: Props) => {
             <div className='ml-auto self-end flex items-center gap-3 pb-1'>
               <div className='flex -space-x-2'>
                 <Avatar className='h-8 w-8 border-2 border-white'>
-                  <AvatarFallback className='bg-slate-800 text-white text-xs'>
-                    JD
-                  </AvatarFallback>
-                </Avatar>
-                <Avatar className='h-8 w-8 border-2 border-white'>
-                  <AvatarFallback className='bg-slate-100 text-slate-600 text-xs'>
-                    +2
+                  <AvatarFallback className='bg-slate-800 text-white text-xs rounded-2xl px-2 py-2'>
+                    {task?.user.initials}
                   </AvatarFallback>
                 </Avatar>
               </div>
-              <Button
-                variant='outline'
-                size='icon'
-                className='h-8 w-8 rounded-full ml-2'
-              >
-                <Plus className='h-4 w-4' />
-              </Button>
             </div>
           </div>
         </div>

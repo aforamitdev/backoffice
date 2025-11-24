@@ -1,45 +1,81 @@
-// pk_5752439_8WOMCT3ASRT4O0F46CND5ONWPQUVQORX
-
-import buildTaskTree from "@/components/tasks/utils/taskTree";
-import type { Task } from "@/types/task.type";
+import type { Task } from '@/types/task.type';
+import type { TimeEntryPayload, TimeResponse } from '@/types/time.type';
 import axios from 'axios';
 
 const CLICKUP_BASE = 'https://api.clickup.com/api/v2';
 
-/**
- * Fetch all tasks for a ClickUp list, including subtasks.
- *
- * @param listId - ClickUp list ID
- * @param token - ClickUp API token (optional; falls back to process.env.CLICKUP_TOKEN)
- * @returns Promise resolving to an array of tasks
- */
-export const getTasks = async (listId: string, token?: string): Promise<Task[]> => {
-  const apiToken ="pk_5752439_EAJWUDD5A0VNOJ0GFW51CSMN5MRAXREC"
+export const getTasks = async (listId: string): Promise<Task[]> => {
+  const apiToken = import.meta.env.VITE_CLICK_UP;
 
-  if (!apiToken) throw new Error('ClickUp API token required (pass token or set CLICKUP_TOKEN).');
+  if (!apiToken)
+    throw new Error(
+      'ClickUp API token required (pass token or set CLICKUP_TOKEN).'
+    );
 
   const results: Task[] = [];
   let page = 0;
 
   try {
     while (true) {
-      const resp = await axios.get(`${CLICKUP_BASE}/list/${encodeURIComponent(listId)}/task`, {
-        headers: { Authorization: apiToken },
-        params: { subtasks: true, page },
-      });
+      const resp = await axios.get(
+        `${CLICKUP_BASE}/list/${encodeURIComponent(listId)}/task`,
+        {
+          headers: { Authorization: apiToken },
+          params: { subtasks: true, page },
+        }
+      );
 
       const tasks = Array.isArray(resp.data?.tasks) ? resp.data.tasks : [];
       results.push(...tasks);
 
-      // Stop when API indicates no more pages or returned no tasks
       if (resp.data?.has_more === false || tasks.length === 0) break;
       page += 1;
     }
-
-    return buildTaskTree(results);
   } catch (err: any) {
-    // surface helpful error message
     const msg = err?.response?.data || err?.message || err;
     throw new Error(`Failed to fetch ClickUp tasks: ${JSON.stringify(msg)}`);
+  }
+  return results;
+};
+
+export const startTask = async (
+  params: TimeEntryPayload
+): Promise<TimeResponse | null> => {
+  const apiToken = import.meta.env.VITE_CLICK_UP;
+
+  if (!apiToken)
+    throw new Error(
+      'ClickUp API token required (pass token or set CLICKUP_TOKEN).'
+    );
+
+  const resp = await axios.post<TimeResponse>(
+    `${CLICKUP_BASE}/team/${params.workSpaceId}/time_entries/start?custom_task_ids=false`,
+    { tid: params.tid },
+    { headers: { Authorization: apiToken } }
+  );
+
+  if (resp.data) {
+    return resp.data;
+  }
+
+  throw new Error('error start task ');
+};
+
+export const getCurrentActiveTask = async (workSpaceId: string) => {
+  const apiToken = import.meta.env.VITE_CLICK_UP;
+
+  if (!apiToken)
+    throw new Error(
+      'ClickUp API token required (pass token or set CLICKUP_TOKEN).'
+    );
+
+  try {
+    const resp = await axios.get(
+      `${CLICKUP_BASE}/team/${workSpaceId}/time_entries/current`,
+      {headers:{Authorization:apiToken}}
+    );
+    return resp;
+  } catch {
+    throw new Error('error getting current');
   }
 };

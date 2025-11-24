@@ -3,7 +3,7 @@ import MilestonesList from './MilestonesList';
 import { Card } from '../ui/card';
 import { useState } from 'react';
 import { Button } from '../ui/button';
-import { ChevronRight, Plus } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '../ui/badge';
 
@@ -14,7 +14,7 @@ type Props = {
 const GoalsList = (props: Props) => {
   return (
     <>
-      {props.goals.map((g) => (
+      {props.goals?.map((g) => (
         <div className='my-2' key={g.id}>
           <Goal goal={g} />
         </div>
@@ -31,7 +31,6 @@ const Goal = ({ goal }: GoalProp) => {
 
   return (
     <Card className='overflow-hidden border-slate-200  duration-200 mb-0 gap-2'>
-      {/* Header */}
       <div
         onClick={() => setIsOpen(!isOpen)}
         className='flex items-center justify-between px-4 py-3 bg-slate-50/50 border-b border-slate-100 cursor-pointer hover:bg-slate-100/50 transition-colors select-none'

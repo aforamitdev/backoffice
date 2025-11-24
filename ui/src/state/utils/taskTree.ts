@@ -1,8 +1,10 @@
 import type { Task } from "@/types/task.type";
 
+type TaskWithChildren = Task & { children: TaskWithChildren[] };
+
 export default function buildTaskTree(tasks:Task[]) {
-    const taskMap = {};
-    const tree = [];
+    const taskMap: Record<string, TaskWithChildren> = {};
+    const tree: TaskWithChildren[] = [];
 
     // Step 1: Initialize the map and add a 'children' array to each task
     // This creates a reference object where we can look up tasks by ID instantly.
