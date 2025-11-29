@@ -1,5 +1,5 @@
 {
-      "noImplicitAny":false,
+      "noImplicitAny": true,
 
   "files": [],
   "references": [

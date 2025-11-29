@@ -1,17 +1,18 @@
-import type { Task } from '@/types/task.type';
+import type { Task as TaskType } from '@/types/task.type';
 import { Checkbox } from '../../ui/checkbox';
 import { Label } from '../../ui/label';
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Play, StopCircle } from 'lucide-react';
 
 type Props = {
-  task: Task;
+  task: TaskType;
   id: string;
   startTaskTime: (taskid: string, wid: string) => void;
-  current?: any;
+  current?: TaskType;
 };
-function Task({ task, startTaskTime, current }: Props) {
+
+const Task = memo(({ task, startTaskTime, current }: Props) => {
   const tags = useMemo(() => {
     return task.tags.map((t) => t.name);
   }, [task]);
@@ -29,23 +30,29 @@ function Task({ task, startTaskTime, current }: Props) {
         </div>
 
         {current?.id !== task.id ? (
-          <div
-            className='text-sm flex  items-center cursor-pointer'
+          <button
+            className='text-sm flex items-center cursor-pointer bg-transparent border-0 p-1 hover:opacity-80'
             onClick={() => startTaskTime(task.id, task.space.id)}
+            aria-label={`Start task: ${task.name}`}
+            type="button"
           >
-            <Play size={15} className='text-green-500 ' />
-          </div>
+            <Play size={15} className='text-green-500' aria-hidden="true" />
+          </button>
         ) : (
-          <div
-            className='text-sm flex  items-center cursor-pointer'
+          <button
+            className='text-sm flex items-center cursor-pointer bg-transparent border-0 p-1 hover:opacity-80'
             onClick={() => startTaskTime(task.id, task.space.id)}
+            aria-label={`Stop task: ${task.name}`}
+            type="button"
           >
-            <StopCircle size={15} className='text-red-500 ' />
-          </div>
+            <StopCircle size={15} className='text-red-500' aria-hidden="true" />
+          </button>
         )}
       </div>
     </div>
   );
-}
+});
+
+Task.displayName = 'Task';
 
 export default Task;

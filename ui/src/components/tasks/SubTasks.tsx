@@ -1,9 +1,10 @@
 import type { Task } from '@/types/task.type';
 import TaskUnit from './units/Tasks';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { startTask } from '@/services/clickup/clickip.services';
 import { useAtom } from 'jotai';
 import { currentTaskAtom } from '@/state/time.jotai';
+import { CLICKUP_CONFIG } from '@/constants/config';
 
 type Props = {
   tasks: Task[];
@@ -11,38 +12,38 @@ type Props = {
 
 function SubTaskList({ tasks }: Props) {
   const [current, setCurrentTask] = useAtom(currentTaskAtom);
+
   const sorted = useMemo(() => {
-    return tasks.sort((a, b) => a.orderindex - b.orderindex);
+    return [...tasks].sort((a, b) => a.orderindex - b.orderindex);
   }, [tasks]);
 
-  const handleStartTask = async (tid: string) => {
+  const handleStartTask = useCallback(async (tid: string) => {
     try {
       const response = await startTask({
-        workSpaceId: '9016922311',
+        workSpaceId: CLICKUP_CONFIG.DEFAULT_WORKSPACE_ID,
         tid: tid,
         team_id: tid,
       });
       if (response?.data) {
         setCurrentTask(response.data);
       }
-    } catch {
-      return new Error('Error starting task');
+    } catch (error) {
+      console.error('Error starting task:', error);
+      throw new Error('Failed to start task');
     }
-  };
+  }, [setCurrentTask]);
 
   return (
     <div>
-      {sorted?.map((s) => {
-        return (
-          <TaskUnit
-            id={s.id}
-            task={s}
-            key={s.id}
-            startTaskTime={handleStartTask}
-            current={current?.task}
-          />
-        );
-      })}
+      {sorted.map((s) => (
+        <TaskUnit
+          id={s.id}
+          task={s}
+          key={s.id}
+          startTaskTime={handleStartTask}
+          current={current?.task}
+        />
+      ))}
     </div>
   );
 }

@@ -1,6 +1,36 @@
+export interface Priority {
+  id: string
+  priority: string
+  color: string
+  orderindex: string
+}
+
+export interface Dependency {
+  task_id: string
+  depends_on: string
+  type: number
+}
+
+export interface LinkedTask {
+  task_id: string
+  link_id: string
+}
+
+export interface Location {
+  id: string
+  name: string
+  lat: string
+  lng: string
+}
+
+export interface GroupAssignee {
+  id: number
+  name: string
+}
+
 export interface Task {
   id: string
-  custom_id:string
+  custom_id: string
   custom_item_id: number
   name: string
   text_content: string
@@ -14,21 +44,21 @@ export interface Task {
   archived: boolean
   creator: Creator
   assignees: Assignee[]
-  group_assignees: any[]
+  group_assignees: GroupAssignee[]
   watchers: Watcher[]
   checklists: Checklist[]
   tags: Tag[]
   parent: string
   top_level_parent: string
-  priority: any
-  due_date: any
-  start_date: any
-  points: any
-  time_estimate: any
+  priority: Priority | null
+  due_date: string | null
+  start_date: string | null
+  points: number | null
+  time_estimate: number | null
   custom_fields: CustomField[]
-  dependencies: any[]
-  linked_tasks: any[]
-  locations: any[]
+  dependencies: Dependency[]
+  linked_tasks: LinkedTask[]
+  locations: Location[]
   team_id: string
   url: string
   sharing: Sharing
@@ -36,8 +66,8 @@ export interface Task {
   list: List
   project: Project
   folder: Folder
-  space: Space,
-  children:Task[]
+  space: Space
+  children: Task[]
 }
 
 export interface Tag {
@@ -69,7 +99,7 @@ export interface Assignee {
   color: string
   initials: string
   email: string
-  profilePicture: any
+  profilePicture: string | null
 }
 
 export interface Watcher {
@@ -78,7 +108,7 @@ export interface Watcher {
   color: string
   initials: string
   email: string
-  profilePicture: any
+  profilePicture: string | null
 }
 
 export interface CustomField {
@@ -95,9 +125,9 @@ export interface TypeConfig {}
 
 export interface Sharing {
   public: boolean
-  public_share_expires_on: any
+  public_share_expires_on: string | null
   public_fields: string[]
-  token: any
+  token: string | null
   seo_optimized: boolean
 }
 
@@ -145,12 +175,12 @@ export interface Item {
   name: string
   orderindex: number
   resolved: boolean
-  parent: any
+  parent: string | null
   date_created: string
-  start_date: any
+  start_date: string | null
   start_date_time: boolean
-  due_date: any
+  due_date: string | null
   due_date_time: boolean
-  sent_due_date_notif: any
-  children: any[]
+  sent_due_date_notif: boolean | null
+  children: Item[]
 }

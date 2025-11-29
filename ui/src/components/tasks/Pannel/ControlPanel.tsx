@@ -85,40 +85,6 @@ const ControlPanel = () => {
         </div>
 
         <Separator />
-
-        {/* Navigation Tabs */}
-        {/* <div className='px-6 bg-slate-50/50'>
-          <div className='flex items-center gap-6'>
-            <button
-            
-              className={cn(
-                'flex items-center gap-2 py-4 text-sm font-medium border-b-2 transition-all',
-                activeTab === 'tasks'
-                  ? 'border-purple-600 text-purple-700'
-                  : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
-              )}
-            >
-              <ListFilter className='w-4 h-4' />
-              Tasks
-            </button>
-            <button
-              
-              className={cn(
-                'flex items-center gap-2 py-4 text-sm font-medium border-b-2 transition-all',
-                "filds" === 'fields'
-                  ? 'border-purple-600 text-purple-700'
-                  : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
-              )}
-            >
-              <Layout className='w-4 h-4' />
-              Custom fields
-            </button>
-            <button className='flex items-center gap-2 py-4 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300 transition-all'>
-              <MessageSquare className='w-4 h-4' />
-              Notes
-            </button>
-          </div>
-        </div> */}
       </Card>
     </>
   );

@@ -24,6 +24,7 @@ import appState from './state.jotai';
 import { taskAtom } from './task.jotai';
 import { useSetAtom } from 'jotai';
 import { currentTaskAtom } from './time.jotai';
+import { CLICKUP_CONFIG } from '@/constants/config';
 
 export const AppContext = createContext<AppContextType>(defaultContextValue);
 
@@ -64,7 +65,7 @@ export const AppContextProvider: React.FC<MyContextProviderProps> = ({
   );
 
   const taskFetchEvent = useEffectEvent(async () => {
-    return await getTasks('901612157845');
+    return await getTasks(CLICKUP_CONFIG.DEFAULT_LIST_ID);
   });
 
   useEffect(() => {
@@ -73,17 +74,21 @@ export const AppContextProvider: React.FC<MyContextProviderProps> = ({
         setTasks(res);
       })
       .catch((err) => {
-        console.log(err);
+        console.error('Failed to fetch tasks:', err);
       });
-  }, []);
+  }, [taskFetchEvent]);
 
   useEffect(() => {
-    getCurrentActiveTask('9016922311').then((res) => {
-      if (res.data) {
-        setCurrentTask(res.data.data);
-      }
-    });
-  }, []);
+    getCurrentActiveTask(CLICKUP_CONFIG.DEFAULT_WORKSPACE_ID)
+      .then((res) => {
+        if (res.data) {
+          setCurrentTask(res.data.data);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch current task:', err);
+      });
+  }, [setCurrentTask]);
 
   return (
     <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>

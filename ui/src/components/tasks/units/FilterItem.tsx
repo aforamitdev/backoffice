@@ -2,8 +2,9 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
+import { memo } from 'react';
 
-type Props = {
+type FilterItemProps = {
   label: string;
   value: string;
   icon?: React.ReactNode;
@@ -11,7 +12,7 @@ type Props = {
   color?: string;
 };
 
-const FilterItem = ({ label, value, icon, color, avatar }: Props) => {
+const FilterItem = memo(({ label, value, icon, color, avatar }: FilterItemProps) => {
   return (
     <div className='flex flex-col gap-1.5'>
       <span className='text-[10px] font-semibold text-slate-400 uppercase tracking-wider'>
@@ -33,6 +34,8 @@ const FilterItem = ({ label, value, icon, color, avatar }: Props) => {
       </Button>
     </div>
   );
-};
+});
+
+FilterItem.displayName = 'FilterItem';
 
 export default FilterItem;

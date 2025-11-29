@@ -1,13 +1,13 @@
 import { Badge } from '@/components/ui/badge';
-import React from 'react';
+import { memo } from 'react';
 
-type Props = {
+type TagProps = {
   name: string;
   bg: string;
   fg: string;
 };
 
-function Tag({ name, bg, fg }: Props) {
+const Tag = memo(({ name, bg, fg }: TagProps) => {
   return (
     <Badge
       variant='outline'
@@ -17,6 +17,8 @@ function Tag({ name, bg, fg }: Props) {
       {name}
     </Badge>
   );
-}
+});
+
+Tag.displayName = 'Tag';
 
 export default Tag;

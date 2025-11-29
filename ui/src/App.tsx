@@ -1,58 +1,20 @@
-import { Separator } from '@radix-ui/react-separator';
-import { AppSidebar } from './components/app-sidebar';
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from './components/ui/sidebar';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from './components/ui/breadcrumb';
-import Home from './pages/home/home';
-import ControlPanel from './components/tasks/Pannel/ControlPanel';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Layout from './components/layout/Layout';
+import Dashboard from './pages/dashboard/Dashboard';
+import TasksPage from './pages/tasks/TasksPage';
+import SimpleTasksPage from './pages/simple-tasks/SimpleTasksPage';
 
 function App() {
   return (
-    <>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <header className='flex h-16 shrink-0 items-center gap-2'>
-            <div className='flex items-center gap-2 px-4'>
-              <SidebarTrigger className='-ml-1' />
-              <Separator
-                orientation='vertical'
-                className='mr-2 data-[orientation=vertical]:h-4'
-              />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem className='hidden md:block'>
-                    <BreadcrumbLink href='#'>Amit Inc</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className='hidden md:block' />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>Todos</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </div>
-          </header>
-          <div className='flex flex-1 flex-col gap-4 p-4 pt-0'>
-            <div className=''>
-              <ControlPanel />
-            </div>
-            <div className='bg-muted/50 min-h-[100vh] flex-1  md:min-h-min'>
-              <Home />
-            </div>
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
-    </>
+    <Routes>
+      <Route path='/' element={<Layout />}>
+        <Route index element={<Dashboard />} />
+        <Route path='dashboard' element={<Navigate to='/' replace />} />
+        <Route path='tasks' element={<TasksPage />} />
+        <Route path='quick-tasks' element={<SimpleTasksPage />} />
+        <Route path='*' element={<Navigate to='/' replace />} />
+      </Route>
+    </Routes>
   );
 }
 
