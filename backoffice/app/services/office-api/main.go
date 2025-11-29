@@ -38,12 +38,11 @@ func run(storage *storage.BackOfficeStorage) error {
 		DB struct {
 			ProductImages string `conf:"default:product-images.json"`
 			ImageGroups   string `conf:"default:image-groups.json"`
-			// hosts
-			Host         string `conf:"default:localhost"`
-			Name         string `conf:"default:postgres"`
-			MaxIdleConns int    `conf:"default:0"`
-			MaxOpenConns int    `conf:"default:0"`
-			DisableTLS   bool   `conf:"default:true"`
+			Host          string `conf:"default:localhost"`
+			Name          string `conf:"default:postgres"`
+			MaxIdleConns  int    `conf:"default:0"`
+			MaxOpenConns  int    `conf:"default:0"`
+			DisableTLS    bool   `conf:"default:true"`
 		}
 	}{
 		Version: conf.Version{
