@@ -6,7 +6,11 @@ toolchain go1.24.10
 
 require (
 	github.com/ardanlabs/conf v1.5.0
+	github.com/ardanlabs/conf/v3 v3.9.0
+	github.com/gorilla/mux v1.8.1
+	github.com/joho/godotenv v1.5.1
 	github.com/pocketbase/pocketbase v0.34.0
+	go.uber.org/zap v1.27.1
 )
 
 require (
@@ -29,6 +33,7 @@ require (
 	github.com/spf13/cast v1.10.0 // indirect
 	github.com/spf13/cobra v1.10.1 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/crypto v0.45.0 // indirect
 	golang.org/x/exp v0.0.0-20251113190631-e25ba8c21ef6 // indirect
 	golang.org/x/image v0.33.0 // indirect
