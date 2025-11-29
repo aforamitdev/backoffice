@@ -24,7 +24,7 @@ dbtool:
 	go run app/services/seeder/main.go server
 
 build-win:
-	GOOS=windows GOARCH=amd64 go build -o abin/mock-server.exe app/services/katana-mock/main.go
+	GOOS=windows GOARCH=amd64 go build -o abin/mock-server.exe backoffice/app/services/backoffice-api/main.go
 	GOOS=windows GOARCH=amd64 go build -o abin/mock-server-cert.exe app/services/katana-mock-cert/main.go
 	cp -r ./pb_data ./abin
 
