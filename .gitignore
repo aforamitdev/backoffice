@@ -1,3 +1,2 @@
-.vscode
-.vscode-upload.json
-.env.production
+ui/.env
+node_modules
