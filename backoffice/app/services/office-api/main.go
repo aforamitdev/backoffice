@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/aforamitdev/backoffice/backoffice/app/services/office-api/handler"
 	"github.com/aforamitdev/backoffice/backoffice/app/services/storage"
 	"github.com/aforamitdev/backoffice/backoffice/foundation/logger"
 	"github.com/ardanlabs/conf"
@@ -35,12 +36,12 @@ func main() {
 
 }
 
-func run(log *zap.SugaredLogger, storage *storage.BackOfficeStorage) error {
+func run(log *zap.SugaredLogger, storage *storage.PbDb) error {
 
 	cfg := struct {
 		conf.Version
 		Web struct {
-			APIHost         string        `conf:"default:localhost:9000"`
+			APIHost         string        `conf:"default:127.0.0.1:9000"`
 			DebugHost       string        `conf:"default:0.0.0.0:9001"`
 			ShutdownTimeout time.Duration `conf:"default:20s"`
 		}
@@ -50,8 +51,11 @@ func run(log *zap.SugaredLogger, storage *storage.BackOfficeStorage) error {
 			Desc: "Back office api",
 		},
 	}
+
 	fmt.Println(cfg)
+
 	log.Infow("starting service", "version", build)
+
 	defer log.Infow("shutdown complete")
 
 	shutdown := make(chan os.Signal, 1)
@@ -59,8 +63,15 @@ func run(log *zap.SugaredLogger, storage *storage.BackOfficeStorage) error {
 
 	serverErrors := make(chan error, 1)
 
+	apiMux := handler.APIMux(handler.APIMuxConfig{
+		Shutdown: shutdown,
+		Log:      log,
+		Db:       storage,
+	})
+
 	api := http.Server{
 		Addr:     cfg.Web.APIHost,
+		Handler:  apiMux,
 		ErrorLog: zap.NewStdLog(log.Desugar()),
 	}
 
@@ -69,6 +80,7 @@ func run(log *zap.SugaredLogger, storage *storage.BackOfficeStorage) error {
 	}()
 
 	go func() {
+		log.Infow("startup", "status", "api router started", "host", api.Addr)
 		serverErrors <- api.ListenAndServe()
 	}()
 

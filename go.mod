@@ -6,15 +6,20 @@ toolchain go1.24.10
 
 require (
 	github.com/ardanlabs/conf v1.5.0
-	github.com/ardanlabs/conf/v3 v3.9.0
-	github.com/gorilla/mux v1.8.1
-	github.com/joho/godotenv v1.5.1
+	github.com/go-playground/universal-translator v0.18.1
 	github.com/pocketbase/pocketbase v0.34.0
 	go.uber.org/zap v1.27.1
 )
 
 require (
+	github.com/go-playground/locales v0.14.1 // indirect
+	github.com/leodido/go-urn v1.4.0 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
+)
+
+require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
+	github.com/dimfeld/httptreemux/v5 v5.5.0
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/domodwyer/mailyak/v3 v3.6.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
@@ -22,8 +27,9 @@ require (
 	github.com/gabriel-vasile/mimetype v1.4.11 // indirect
 	github.com/ganigeorgiev/fexpr v0.5.0 // indirect
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0 // indirect
+	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/golang-jwt/jwt/v5 v5.3.0 // indirect
-	github.com/google/uuid v1.6.0 // indirect
+	github.com/google/uuid v1.6.0
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect

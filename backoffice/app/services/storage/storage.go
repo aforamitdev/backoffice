@@ -8,11 +8,11 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 )
 
-type BackOfficeStorage struct {
+type PbDb struct {
 	Pb *pocketbase.PocketBase
 }
 
-func NewBackOfficeStorage() (*BackOfficeStorage, error) {
+func NewBackOfficeStorage() (*PbDb, error) {
 	s := pocketbase.New()
 
 	if err := s.Start(); err != nil {
@@ -28,11 +28,11 @@ func NewBackOfficeStorage() (*BackOfficeStorage, error) {
 		return nil, err
 	}
 
-	return &BackOfficeStorage{Pb: s}, nil
+	return &PbDb{Pb: s}, nil
 
 }
 
-func (bs *BackOfficeStorage) StartDBUi() error {
+func (bs *PbDb) StartDBUi() error {
 
 	err := apis.Serve(bs.Pb, apis.ServeConfig{
 		ShowStartBanner: true,

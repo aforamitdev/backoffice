@@ -6,7 +6,7 @@ import (
 	"os"
 	"syscall"
 
-	"github.com/gorilla/mux"
+	"github.com/dimfeld/httptreemux/v5"
 )
 
 type Logger func(ctx context.Context, msg string, args ...any)
@@ -14,14 +14,14 @@ type Logger func(ctx context.Context, msg string, args ...any)
 type Handler func(ctx context.Context, w http.ResponseWriter, r *http.Request) error
 
 type App struct {
-	mux      *mux.Router
+	mux      *httptreemux.ContextMux
 	log      Logger
 	shutdown chan os.Signal
 }
 
 func NewApp(shutdown chan os.Signal) *App {
 
-	mux := mux.NewRouter()
+	mux := httptreemux.NewContextMux()
 	return &App{
 		mux: mux,
 	}
@@ -36,12 +36,17 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	a.mux.ServeHTTP(w, r)
 }
 
-func (a *App) Handle(method string, path string, handler Handler) {
+func (a *App) Handle(method string, group string, path string, handler Handler, mw ...Middleware) {
 	h := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
 		handler(ctx, w, r)
 
 	}
-	a.mux.HandleFunc(path, h).Methods(method)
+	finalPath := path
+	if group != "" {
+		finalPath = "/" + group + path
+	}
+	a.mux.Handle(method, finalPath, h)
+
 }
