@@ -2,6 +2,7 @@ package web
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"syscall"
@@ -17,13 +18,15 @@ type App struct {
 	mux      *httptreemux.ContextMux
 	log      Logger
 	shutdown chan os.Signal
+	mw       []Middleware
 }
 
-func NewApp(shutdown chan os.Signal) *App {
+func NewApp(shutdown chan os.Signal, mw ...Middleware) *App {
 
 	mux := httptreemux.NewContextMux()
 	return &App{
 		mux: mux,
+		mw:  mw,
 	}
 
 }
@@ -37,6 +40,8 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) Handle(method string, group string, path string, handler Handler, mw ...Middleware) {
+	handler = wrapMiddleware(mw, handler)
+
 	h := func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
@@ -47,6 +52,7 @@ func (a *App) Handle(method string, group string, path string, handler Handler, 
 	if group != "" {
 		finalPath = "/" + group + path
 	}
+	fmt.Println(finalPath)
 	a.mux.Handle(method, finalPath, h)
 
 }

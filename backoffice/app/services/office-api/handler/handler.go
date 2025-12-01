@@ -7,6 +7,7 @@ import (
 	"github.com/aforamitdev/backoffice/backoffice/app/services/office-api/handler/v1/taskgrp"
 	"github.com/aforamitdev/backoffice/backoffice/app/services/storage"
 	"github.com/aforamitdev/backoffice/backoffice/business/core/task"
+	"github.com/aforamitdev/backoffice/backoffice/business/web/mid"
 	"github.com/aforamitdev/backoffice/backoffice/foundation/web"
 	"go.uber.org/zap"
 )
@@ -19,7 +20,7 @@ type APIMuxConfig struct {
 
 func APIMux(cfg APIMuxConfig) http.Handler {
 
-	app := web.NewApp(cfg.Shutdown)
+	app := web.NewApp(cfg.Shutdown, mid.Errors(cfg.Log))
 	v1(app, cfg)
 	return app
 }

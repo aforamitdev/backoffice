@@ -20,12 +20,15 @@ func (h Handler) Query(ctx context.Context, w http.ResponseWriter, r *http.Reque
 
 	pageNumber, err := strconv.Atoi(page)
 	if err != nil {
+		fmt.Println(err)
 		return validate.NewRequestError(fmt.Errorf("invalid page format [%s]", page), http.StatusBadRequest)
 	}
 
-	rows := web.Param(r, "rows")
+	rows := web.Param(r, "row")
 	rowsPerPage, err := strconv.Atoi(rows)
+
 	if err != nil {
+		fmt.Println(err)
 		return validate.NewRequestError(fmt.Errorf("invalid rows format [%s]", rows), http.StatusBadRequest)
 	}
 
@@ -33,7 +36,6 @@ func (h Handler) Query(ctx context.Context, w http.ResponseWriter, r *http.Reque
 	if err != nil {
 		return validate.NewRequestError(fmt.Errorf("invalid page format [%s]", 10), http.StatusBadRequest)
 	}
-
 	return web.Respond(ctx, w, tasks, http.StatusOK)
 
 }

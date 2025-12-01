@@ -15,9 +15,7 @@ type Core struct {
 }
 
 func NewCore(log *zap.SugaredLogger, db *storage.PbDb) Core {
-
 	return Core{log: log, task: task.NewStore(log, db)}
-
 }
 
 func (c Core) Query(ctx context.Context, pageNumber int, rowsPage int) ([]task.Task, error) {

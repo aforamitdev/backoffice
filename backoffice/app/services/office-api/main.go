@@ -52,7 +52,17 @@ func run(log *zap.SugaredLogger, storage *storage.PbDb) error {
 		},
 	}
 
-	fmt.Println(cfg)
+	if err := conf.Parse(os.Args[1:], "APP", &cfg); err != nil {
+		if err == conf.ErrHelpWanted {
+			version, err := conf.VersionString("APP", &cfg)
+			if err != nil {
+				return err
+			}
+			fmt.Println(version)
+			return nil
+		}
+		fmt.Println("parsed config", err)
+	}
 
 	log.Infow("starting service", "version", build)
 
@@ -74,6 +84,7 @@ func run(log *zap.SugaredLogger, storage *storage.PbDb) error {
 		Handler:  apiMux,
 		ErrorLog: zap.NewStdLog(log.Desugar()),
 	}
+	fmt.Println(cfg)
 
 	go func() {
 		serverErrors <- storage.StartDBUi()
