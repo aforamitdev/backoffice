@@ -42,6 +42,7 @@ func (s Store) Query(ctx context.Context, pageNumber int, rowsPerPage int) ([]Ta
 				Name: taskType.GetString("name"),
 			}
 		}
+
 		tags, err := s.GetTagsByIds(ctx, record.GetStringSlice("tags"))
 
 		if err != nil {
@@ -50,6 +51,8 @@ func (s Store) Query(ctx context.Context, pageNumber int, rowsPerPage int) ([]Ta
 
 		task.Tags = tags
 
+		priority, err := s.GetPriorityById(ctx, record.GetString("priority"))
+		task.Priority = priority
 		tasks = append(tasks, task)
 
 	}
@@ -69,4 +72,17 @@ func (s Store) GetTagsByIds(ctx context.Context, ids []string) ([]Tag, error) {
 	}
 
 	return tags, nil
+}
+
+func (s Store) GetPriorityById(ctx context.Context, priority string) (Priority, error) {
+	record, err := s.db.Pb.FindRecordById("priority", priority)
+	if err != nil {
+		return Priority{}, fmt.Errorf("error fetching priority:%w", err)
+	}
+	p := Priority{}
+	p.ID = record.Id
+	p.Name = record.GetString("name")
+
+	return p, nil
+
 }

@@ -84,7 +84,6 @@ func run(log *zap.SugaredLogger, storage *storage.PbDb) error {
 		Handler:  apiMux,
 		ErrorLog: zap.NewStdLog(log.Desugar()),
 	}
-	fmt.Println(cfg)
 
 	go func() {
 		serverErrors <- storage.StartDBUi()
