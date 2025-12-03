@@ -2,6 +2,8 @@ package task
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"fmt"
 
 	"github.com/aforamitdev/backoffice/backoffice/app/services/storage"
@@ -37,7 +39,7 @@ func (s Store) Query(ctx context.Context, pageNumber int, rowsPerPage int) ([]Ta
 		}
 
 		if taskType := record.ExpandedOne("task_type"); taskType != nil {
-			task.TaskType = TaskType{
+			task.TaskType = &TaskType{
 				Id:   taskType.Id,
 				Name: taskType.GetString("name"),
 			}
@@ -53,6 +55,10 @@ func (s Store) Query(ctx context.Context, pageNumber int, rowsPerPage int) ([]Ta
 
 		priority, err := s.GetPriorityById(ctx, record.GetString("priority"))
 		task.Priority = priority
+
+		tt, err := s.GetTaskType(ctx, record.GetString("task_type"))
+		task.TaskType = tt
+
 		tasks = append(tasks, task)
 
 	}
@@ -62,11 +68,13 @@ func (s Store) Query(ctx context.Context, pageNumber int, rowsPerPage int) ([]Ta
 
 func (s Store) GetTagsByIds(ctx context.Context, ids []string) ([]Tag, error) {
 	records, err := s.db.Pb.FindRecordsByIds("tags", ids)
+	fmt.Println(records, "RES")
 	if err != nil {
+
 		return nil, fmt.Errorf("error fetching tags: %w", err)
 	}
 
-	var tags []Tag
+	tags := []Tag{}
 	for _, r := range records {
 		tags = append(tags, Tag{ID: r.Id, Name: r.GetString("name")})
 	}
@@ -74,15 +82,34 @@ func (s Store) GetTagsByIds(ctx context.Context, ids []string) ([]Tag, error) {
 	return tags, nil
 }
 
-func (s Store) GetPriorityById(ctx context.Context, priority string) (Priority, error) {
+func (s Store) GetPriorityById(ctx context.Context, priority string) (*Priority, error) {
 	record, err := s.db.Pb.FindRecordById("priority", priority)
+	fmt.Println(err)
+
 	if err != nil {
-		return Priority{}, fmt.Errorf("error fetching priority:%w", err)
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("error fetching priority:%w", err)
 	}
 	p := Priority{}
 	p.ID = record.Id
 	p.Name = record.GetString("name")
 
-	return p, nil
+	return &p, nil
 
+}
+
+func (s Store) GetTaskType(ctx context.Context, id string) (*TaskType, error) {
+	record, err := s.db.Pb.FindRecordById("task_type", id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("error getting task type")
+	}
+	t := TaskType{}
+	t.Id = record.Id
+	t.Name = record.GetString("name")
+	return &t, nil
 }

@@ -1,12 +1,12 @@
 package task
 
 type Task struct {
-	ID       string   `db:"id",json:"id"`
-	Title    string   `json:"title"`
-	TaskType TaskType `json:"task_type"`
-	Detail   string   `json:"detail"`
-	Tags     []Tag    `json:"tags"`
-	Priority Priority `json:"priorities"`
+	ID       string    `db:"id",json:"id"`
+	Title    string    `json:"title"`
+	TaskType *TaskType `json:"task_type"`
+	Detail   string    `json:"detail"`
+	Tags     []Tag     `json:"tags"`
+	Priority *Priority `json:"priorities"`
 }
 
 type Tag struct {
