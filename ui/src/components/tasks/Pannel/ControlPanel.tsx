@@ -2,9 +2,8 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@radix-ui/react-separator';
 import FilterItem from '../units/FilterItem';
-import { Clock, Plus } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@radix-ui/react-avatar';
-import { Button } from '@/components/ui/button';
 import { useAtomValue } from 'jotai';
 import { currentTaskAtom } from '@/state/time.jotai';
 

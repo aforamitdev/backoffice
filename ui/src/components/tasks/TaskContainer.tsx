@@ -1,12 +1,14 @@
 import { useAtomValue } from 'jotai';
-import { taskAtomWithChild } from '@/state/task.jotai';
+import { taskAtomWithChild } from '@/state/tasks/task.jotai';
 import GoalsList from './GoalsList';
+import { taskAtom } from '@/state/tasks/jotai/task.jotai';
 
 function TaskContainer() {
-  const tasks = useAtomValue(taskAtomWithChild);
+  const tasks = useAtomValue(taskAtom);
   return (
     <div>
-      <GoalsList goals={tasks} />
+      {JSON.stringify(tasks)}
+      {/* <GoalsList goals={tasks} /> */}
     </div>
   );
 }

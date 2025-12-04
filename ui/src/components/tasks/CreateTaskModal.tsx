@@ -20,7 +20,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { taskAtomWithChild, taskAtom } from '@/state/task.jotai';
+import { taskAtomWithChild, taskAtom } from '@/state/tasks/task.jotai';
 import { CLICKUP_CONFIG } from '@/constants/config';
 import type { Task } from '@/types/task.type';
 

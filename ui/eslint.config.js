@@ -19,5 +19,17 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Increase max line width to 120 characters
+      "max-len": [
+        "warn",
+        {
+          code: 120,
+          ignoreComments: true,
+          ignoreUrls: true,
+          ignoreTemplateLiterals: true,
+        },
+      ],
+    },
   },
 ]);

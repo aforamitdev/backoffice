@@ -1,12 +1,5 @@
-import {  createStore } from "jotai";
+import { createStore } from 'jotai';
 
+const appState = createStore();
 
-
-const appState=createStore()
-
-
-
-
-
-
-export default appState 
+export default appState;

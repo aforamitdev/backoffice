@@ -5,16 +5,23 @@ import './index.css';
 import App from './App.tsx';
 import { Provider } from 'jotai';
 import state from './state/state.jotai.ts';
-import { AppContextProvider } from './state/AppContext.tsx';
+import TaskContextProvider from './state/tasks/TaskContex.tsx';
+import ApiClientContextProvider from './state/ApiContext.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+const clientQuery = new QueryClient();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <Provider store={state}>
-        <AppContextProvider>
-          <App />
-        </AppContextProvider>
-      </Provider>
+      <QueryClientProvider client={clientQuery}>
+        <ApiClientContextProvider>
+          <Provider store={state}>
+            <TaskContextProvider>
+              <App />
+            </TaskContextProvider>
+          </Provider>
+        </ApiClientContextProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>
 );

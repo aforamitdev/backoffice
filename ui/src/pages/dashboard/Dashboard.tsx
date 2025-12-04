@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAtomValue } from 'jotai';
-import { taskAtomWithChild } from '@/state/task.jotai';
+import { taskAtomWithChild } from '@/state/tasks/task.jotai';
 import { currentTaskAtom } from '@/state/time.jotai';
 import {
   BarChart3,
