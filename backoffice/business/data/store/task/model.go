@@ -7,6 +7,7 @@ type Task struct {
 	Detail   string    `json:"detail"`
 	Tags     []Tag     `json:"tags"`
 	Priority *Priority `json:"priorities"`
+	SubTasks []Task    `json:"children"`
 }
 
 type Tag struct {

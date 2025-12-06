@@ -7,6 +7,7 @@ export interface AppTask {
   detail: string
   tags?: Tag[]
   priorities: Priorities
+  children?:AppTask[]
 }
 
 export interface TaskType {

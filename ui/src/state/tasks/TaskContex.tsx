@@ -21,6 +21,7 @@ const TaskContextProvider = ({
 
   const setTaskAtoms = useSetAtom(taskAtom);
   const { data } = useTaskQuery(api);
+
   useEffect(() => {
     if (data) setTaskAtoms(data);
   }, [data]);
