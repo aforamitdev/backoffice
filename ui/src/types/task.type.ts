@@ -12,7 +12,7 @@ export interface AppTask {
 
 export interface TaskType {
   id: string
-  name: string
+  name: 'GOAL' | 'MILESTONE' | 'SUBTASK' | 'UNIT';
 }
 
 export interface Tag {
@@ -23,5 +23,5 @@ export interface Tag {
 
 export interface Priorities {
   id: string
-  name: string
+  name: "HIGH"|"LOW"|"MEDIUM"|"NOW"
 }

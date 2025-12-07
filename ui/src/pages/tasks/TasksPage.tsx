@@ -1,11 +1,15 @@
+import { CreateTaskModal } from '@/components/AppTask/Create/CreateModel';
+import { TaskDetailDrawer } from '@/components/AppTask/Details/TaskDetails';
 import { TableDemo } from '@/components/tasks/Rows/TaskRow';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { taskAtom } from '@/state/tasks/task.jotai';
-import { useAtomValue } from 'jotai';
+import { selectedTaskAtom } from '@/state/tasks/task.jotai';
+import { useAtom } from 'jotai';
 import { List, SquareKanban } from 'lucide-react';
+import { useState } from 'react';
 
 function TasksPage() {
-  const tasks = useAtomValue(taskAtom);
+  const [task, setTask] = useAtom(selectedTaskAtom);
+  const [createOpen, setCreateOpen] = useState(true);
   return (
     <div>
       <Tabs defaultValue='account' className='w-full'>
@@ -33,8 +37,9 @@ function TasksPage() {
             <TableDemo />
           </div>
         </TabsContent>
-        <TabsContent value='password'>Change your password here.</TabsContent>
       </Tabs>
+      <CreateTaskModal open={createOpen} onOpenChange={setCreateOpen} />
+      <TaskDetailDrawer open={Boolean(task)} task={task} />
     </div>
   );
 }

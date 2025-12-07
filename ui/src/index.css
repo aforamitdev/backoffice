@@ -39,6 +39,21 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+
+  /* mt thems  */
+
+  --color-cool-steel-50: #f0f3f4;
+--color-cool-steel-100: #e1e7ea;
+--color-cool-steel-200: #c4cfd4;
+--color-cool-steel-300: #a6b7bf;
+--color-cool-steel-400: #89a0a9;
+--color-cool-steel-500: #6b8894;
+--color-cool-steel-600: #566d76;
+--color-cool-steel-700: #405159;
+--color-cool-steel-800: #2b363b;
+--color-cool-steel-900: #151b1e;
+--color-cool-steel-950: #0f1315;
 }
 
 :root {
@@ -74,6 +89,9 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+   /* my colors  */
+
 }
 
 .dark {
@@ -117,5 +135,15 @@
   body {
     @apply bg-background text-foreground;
   }
+
+
 }
 
+@layer utility{
+    .text-input {
+    @apply placeholder:text-zinc-500 focus-visible:ring-purple-400 rounded-none focus-visible:ring-1
+  }
+  .primary-btn{
+    @apply bg-cool-steel-800 border-cool-steel-600 text-zinc-300 hover:bg-cool-steel-800 hover:text-white rounded-xs 
+  }
+}
