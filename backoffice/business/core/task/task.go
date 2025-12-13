@@ -26,3 +26,11 @@ func (c Core) Query(ctx context.Context, pageNumber int, rowsPage int) ([]task.T
 	}
 	return tasks, nil
 }
+
+func (c Core) QueryTasks(ctx context.Context) ([]task.TaskType, error) {
+	tt, err := c.task.GetTaskTypes(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching task types ")
+	}
+	return tt, nil
+}

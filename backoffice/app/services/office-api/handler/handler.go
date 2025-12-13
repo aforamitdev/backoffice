@@ -4,8 +4,10 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/aforamitdev/backoffice/backoffice/app/services/office-api/handler/v1/taggrp"
 	"github.com/aforamitdev/backoffice/backoffice/app/services/office-api/handler/v1/taskgrp"
 	"github.com/aforamitdev/backoffice/backoffice/app/services/storage"
+	"github.com/aforamitdev/backoffice/backoffice/business/core/tag"
 	"github.com/aforamitdev/backoffice/backoffice/business/core/task"
 	"github.com/aforamitdev/backoffice/backoffice/business/web/mid"
 	"github.com/aforamitdev/backoffice/backoffice/foundation/web"
@@ -32,5 +34,13 @@ func v1(app *web.App, cfg APIMuxConfig) {
 	}
 
 	app.Handle(http.MethodGet, version, "/tasks/:page/:row", task.Query)
+	app.Handle(http.MethodGet, version, "/tasks/types", task.QueryTasks)
+
+	tag := taggrp.Handler{
+		Tag: tag.NewCore(cfg.Log, cfg.Db),
+	}
+
+	// tags
+	app.Handle(http.MethodGet, version, "/tags", tag.Query)
 
 }

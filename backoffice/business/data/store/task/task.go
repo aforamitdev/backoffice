@@ -151,3 +151,18 @@ func (s Store) ParseCollectionToTasks(ctx context.Context, record *core.Record) 
 	return &task, err
 
 }
+
+func (s Store) GetTaskTypes(ctx context.Context) ([]TaskType, error) {
+
+	tt, err := s.db.Pb.FindAllRecords("task_type")
+	if err != nil {
+		return nil, fmt.Errorf("error getting task_type")
+	}
+	var task_type []TaskType
+
+	for _, i := range tt {
+		t := TaskType{Id: i.Id, Name: i.GetString("name")}
+		task_type = append(task_type, t)
+	}
+	return task_type, nil
+}

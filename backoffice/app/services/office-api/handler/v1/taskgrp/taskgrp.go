@@ -39,3 +39,13 @@ func (h Handler) Query(ctx context.Context, w http.ResponseWriter, r *http.Reque
 	return web.Respond(ctx, w, tasks, http.StatusOK)
 
 }
+
+func (h Handler) QueryTasks(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+
+	tt, err := h.Task.QueryTasks(ctx)
+	if err != nil {
+		return validate.NewRequestError(fmt.Errorf("error getting value"), http.StatusBadRequest)
+	}
+	return web.Respond(ctx, w, tt, http.StatusOK)
+
+}
