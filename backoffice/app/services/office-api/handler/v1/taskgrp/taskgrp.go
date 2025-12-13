@@ -58,3 +58,12 @@ func (h Handler) QueryStatus(ctx context.Context, w http.ResponseWriter, r *http
 	return web.Respond(ctx, w, ts, http.StatusOK)
 
 }
+
+func (h Handler) QueryPriorities(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+	tp, err := h.Task.QueryPriority(ctx)
+	if err != nil {
+		return validate.NewRequestError(fmt.Errorf("error getting value"), http.StatusBadRequest)
+	}
+	return web.Respond(ctx, w, tp, http.StatusOK)
+
+}
