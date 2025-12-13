@@ -42,3 +42,11 @@ func (c Core) QueryStatus(ctx context.Context) ([]task.TaskStatus, error) {
 	}
 	return ts, nil
 }
+
+func (c Core) QueryPriority(ctx context.Context) ([]task.Priority, error) {
+	tp, err := c.task.GetPriorities(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching task status ")
+	}
+	return tp, nil
+}

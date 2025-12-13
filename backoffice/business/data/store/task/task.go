@@ -182,3 +182,17 @@ func (s Store) GetStatus(ctx context.Context) ([]TaskStatus, error) {
 	return task_status, nil
 
 }
+
+func (s Store) GetPriorities(ctx context.Context) ([]Priority, error) {
+	tp, err := s.db.Pb.FindAllRecords("priority")
+	if err != nil {
+		return nil, fmt.Errorf("error getting task_status")
+	}
+	var task_priority []Priority
+	for _, i := range tp {
+		tp := Priority{ID: i.Id, Name: i.GetString("name")}
+		task_priority = append(task_priority, tp)
+	}
+
+	return task_priority, nil
+}
