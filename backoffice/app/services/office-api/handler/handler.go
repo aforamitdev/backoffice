@@ -35,6 +35,7 @@ func v1(app *web.App, cfg APIMuxConfig) {
 
 	app.Handle(http.MethodGet, version, "/tasks/:page/:row", task.Query)
 	app.Handle(http.MethodGet, version, "/tasks/types", task.QueryTasks)
+	app.Handle(http.MethodGet, version, "/tasks/status", task.QueryStatus)
 
 	tag := taggrp.Handler{
 		Tag: tag.NewCore(cfg.Log, cfg.Db),

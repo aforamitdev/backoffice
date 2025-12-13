@@ -166,3 +166,19 @@ func (s Store) GetTaskTypes(ctx context.Context) ([]TaskType, error) {
 	}
 	return task_type, nil
 }
+
+func (s Store) GetStatus(ctx context.Context) ([]TaskStatus, error) {
+
+	ts, err := s.db.Pb.FindAllRecords("task_status")
+	if err != nil {
+		return nil, fmt.Errorf("error getting task_status")
+	}
+	var task_status []TaskStatus
+
+	for _, i := range ts {
+		ts := TaskStatus{Id: i.Id, Name: i.GetString("name")}
+		task_status = append(task_status, ts)
+	}
+	return task_status, nil
+
+}

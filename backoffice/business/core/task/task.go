@@ -34,3 +34,11 @@ func (c Core) QueryTasks(ctx context.Context) ([]task.TaskType, error) {
 	}
 	return tt, nil
 }
+
+func (c Core) QueryStatus(ctx context.Context) ([]task.TaskStatus, error) {
+	ts, err := c.task.GetStatus(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching task status ")
+	}
+	return ts, nil
+}

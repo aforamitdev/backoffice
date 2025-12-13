@@ -1,0 +1,16 @@
+meta {
+  name: task status
+  type: http
+  seq: 2
+}
+
+get {
+  url: 127.0.0.1:9000/v1/tasks/status
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
