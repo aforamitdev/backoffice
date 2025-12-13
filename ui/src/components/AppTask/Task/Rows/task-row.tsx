@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-type Props = {};
+type Props = {}
 
 const TaskRow = (props: Props) => {
-  return <div>TaskRow</div>;
-};
+	return <div>TaskRow</div>
+}
 
-export default TaskRow;
+export default TaskRow

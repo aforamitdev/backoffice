@@ -1,23 +1,19 @@
-import { useAtomValue } from 'jotai';
-import { taskAtomWithChild } from '@/state/tasks/task.jotai';
+import { useAtomValue } from 'jotai'
+import { taskAtomWithChild } from '@/state/tasks/task.jotai'
 function Dashboard() {
-  return (
-    <div className='space-y-6'>
-      <div>
-        <h1 className='text-3xl font-bold tracking-tight text-slate-900'>
-          Dashboard
-        </h1>
-        <p className='text-sm text-slate-500 mt-1'>
-          Overview of your tasks and progress
-        </p>
-      </div>
+	return (
+		<div className="space-y-6">
+			<div>
+				<h1 className="text-3xl font-bold tracking-tight text-slate-900">Dashboard</h1>
+				<p className="text-sm text-slate-500 mt-1">Overview of your tasks and progress</p>
+			</div>
 
-      {/* Stats Cards */}
+			{/* Stats Cards */}
 
-      {/* Progress Overview */}
+			{/* Progress Overview */}
 
-      {/* Goals Overview */}
-      {/* <Card className='p-6'>
+			{/* Goals Overview */}
+			{/* <Card className='p-6'>
         <div className='flex items-center justify-between mb-4'>
           <h3 className='text-lg font-semibold text-slate-900'>
             Goals Overview
@@ -126,8 +122,8 @@ function Dashboard() {
           )}
         </div>
       </Card> */}
-    </div>
-  );
+		</div>
+	)
 }
 
-export default Dashboard;
+export default Dashboard

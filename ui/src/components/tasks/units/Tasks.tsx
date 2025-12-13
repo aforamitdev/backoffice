@@ -1,27 +1,27 @@
-import { memo } from 'react';
-import { cn } from '@/lib/utils';
+import { memo } from 'react'
+import { cn } from '@/lib/utils'
 
-import type { AppTask } from '@/types/task.type';
+import type { AppTask } from '@/types/task.type'
 
 type Props = {
-  task: AppTask[];
-  id: string;
-  startTaskTime: (taskid: string, wid: string) => void;
-  current?: AppTask;
-};
+	task: AppTask[]
+	id: string
+	startTaskTime: (taskid: string, wid: string) => void
+	current?: AppTask
+}
 
 const Task = memo(({ task, startTaskTime, current }: Props) => {
-  // const tags = useMemo(() => {
-  //   return task.tags.map((t) => t.name);
-  // }, [task]);
+	// const tags = useMemo(() => {
+	//   return task.tags.map((t) => t.name);
+	// }, [task]);
 
-  return (
-    <div
-      className={cn('border-t py-3 px-2 pl-12', {
-        'text-muted': false,
-      })}
-    >
-      {/* <div className='flex justify-between'>
+	return (
+		<div
+			className={cn('border-t py-3 px-2 pl-12', {
+				'text-muted': false,
+			})}
+		>
+			{/* <div className='flex justify-between'>
         <div className='flex items-center gap-3'>
           <Checkbox id={task.id} />
           <Label htmlFor={task.id}>{task.name}</Label>
@@ -47,10 +47,10 @@ const Task = memo(({ task, startTaskTime, current }: Props) => {
           </button>
         )}
       </div> */}
-    </div>
-  );
-});
+		</div>
+	)
+})
 
-Task.displayName = 'Task';
+Task.displayName = 'Task'
 
-export default Task;
+export default Task

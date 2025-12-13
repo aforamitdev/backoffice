@@ -1,10 +1,8 @@
-import type { AppTask } from "@/types/task.type";
-import type {  AxiosInstance } from "axios";
+import type { AxiosInstance } from 'axios'
 
+import type { AppTask } from '@/types/task.type'
 
-export const getAppTasks=async(api:AxiosInstance,params:{size:number,page:number}):Promise<AppTask[]>=>{
-
-	const response=await api.get<AppTask[]>("/v1/tasks/1/1")
+export const getAppTasks = async (api: AxiosInstance, params: { size: number; page: number }): Promise<AppTask[]> => {
+	const response = await api.get<AppTask[]>('/v1/tasks/1/1')
 	return response.data
-
 }
